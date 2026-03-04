@@ -1,7 +1,17 @@
+"""
+Script to generate the OpenAPI JSON specification from the FastAPI app.
+
+Usage: python -m src.api.generate_openapi
+"""
 import json
 import os
 
-from src.api.main import app
+from dotenv import load_dotenv
+
+# Load environment before importing app (which initializes DB config)
+load_dotenv()
+
+from src.api.main import app  # noqa: E402
 
 # Get the OpenAPI schema
 openapi_schema = app.openapi()
@@ -13,3 +23,5 @@ output_path = os.path.join(output_dir, "openapi.json")
 
 with open(output_path, "w") as f:
     json.dump(openapi_schema, f, indent=2)
+
+print(f"OpenAPI spec written to {output_path}")
